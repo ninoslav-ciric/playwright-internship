@@ -2,6 +2,7 @@ package pages;
 
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.PlaywrightException;
+
 import java.nio.file.Paths;
 
 public abstract class BasePage {
@@ -9,13 +10,11 @@ public abstract class BasePage {
 
     public BasePage(Page page) {
         this.page = page;
-
     }
 
     protected void click(String selector) {
         page.click(selector);
     }
-
     protected void fill(String selector, String text) {
         page.fill(selector, text);
     }
@@ -44,4 +43,9 @@ public abstract class BasePage {
         page.screenshot(new Page.ScreenshotOptions()
             .setPath(Paths.get("screenshots/" + name + ".png")));
     }
+
+    public String getCurrentUrl() {
+        return page.url();
+    }
+    public abstract void goTo();
 }

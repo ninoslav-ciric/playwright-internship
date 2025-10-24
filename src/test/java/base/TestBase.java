@@ -6,17 +6,15 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
 import com.microsoft.playwright.Tracing;
 import org.testng.annotations.*;
-import pages.LoginPage;
+import pages.BasePage;
 
 import java.nio.file.Paths;
-
-import static utils.ConfigReader.getBaseUrl;
 
 public class TestBase {
     protected static Playwright playwright;
     protected static Browser browser;
     protected Page page;
-    protected LoginPage loginPage;
+    protected BasePage currentPage;
 
     @BeforeSuite
     public static void setupClass() {
@@ -38,8 +36,6 @@ public class TestBase {
             .setScreenshots(true)
             .setSnapshots(true)
             .setSources(true));
-        loginPage = new LoginPage(page);
-        loginPage.navigateToLogin(getBaseUrl());
     }
 
     @AfterMethod
