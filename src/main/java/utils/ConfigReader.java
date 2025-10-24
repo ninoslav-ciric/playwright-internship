@@ -16,15 +16,28 @@ public class ConfigReader {
         }
     }
     
-    public static String getValidEmail() {
-        return config.getProperty("validUser1");
-    }
+    public static String getValidEmail() { return config.getProperty("validUser1"); }
     
     public static String getValidPassword() {
         return config.getProperty("validPass1");
     }
 
     public static String getBaseUrl() { return config.getProperty("baseUrl"); }
+
+    public static String getDashBoardUrl() { return config.getProperty("dashBoardUrl"); }
+
+    public static String getTestCasesUrl() { return config.getProperty("testCasesUrl"); }
+
+    public static String getNewTestCasesUrl() { return config.getProperty("new-testCaseUrl"); }
+
+    public static String getPyalgroundUrl() { return config.getProperty("projects"); }
+
+    public static String getNewProjectPlaygroundUrl() { return config.getProperty("new-projects"); }
+
+
+    //public static String getInvalidEmail() { return config.getProperty("validUser1"); }
+
+    //public static String getInvalidPassword() { return config.getProperty("validUser1"); }
 
     //Agnostic approach, but needs to have well-defined property names, harder to read in code
     public static String getProperty(String key) {

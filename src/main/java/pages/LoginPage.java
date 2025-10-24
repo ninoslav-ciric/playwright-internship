@@ -41,6 +41,14 @@ public class LoginPage extends BasePage {
         }
     }
 
+    public void navigateToTestCases(String url) {
+        try {
+            safeNavigate(url);
+        } catch (TimeoutError e) {
+            throw new RuntimeException("Failed to navigate to TestCases page: " + e.getMessage());
+        }
+    }
+
     public void loginExpectSuccess(String username, String password) {
         try {
             fillLoginFormWithLocators(username, password);
@@ -49,6 +57,17 @@ public class LoginPage extends BasePage {
             Assert.fail("Login success flow failed: " + e.getMessage());
         }
     }
+
+//    public void loginExpectFail(String username, String password) {
+//        try {
+//            fillLoginFormWithLocators(username, password);
+//            page.waitForSelector(DASHBOARD_SELECTOR, new Page.WaitForSelectorOptions().setTimeout(DEFAULT_TIMEOUT));
+//            Assert.fail("Login je uspeo, ali je očekivan neuspeh!");
+//        }
+//        catch (Exception e) {
+//            Assert.fail("Login success flow failed: " + e.getMessage());
+//        }
+//    }
 
     //Selector approach
     private void fillLoginForm(String username, String password) {
