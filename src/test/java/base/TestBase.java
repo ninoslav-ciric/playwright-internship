@@ -7,6 +7,7 @@ import com.microsoft.playwright.Playwright;
 import com.microsoft.playwright.Tracing;
 import org.testng.annotations.*;
 import pages.LoginPage;
+import pages.TestCasePage;
 
 import java.nio.file.Paths;
 
