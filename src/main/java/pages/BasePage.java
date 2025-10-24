@@ -5,11 +5,14 @@ import com.microsoft.playwright.PlaywrightException;
 import java.nio.file.Paths;
 
 public abstract class BasePage {
-    protected Page page;
+    protected Page page;  //od playwrighta predefinisane fcije ima
 
     public BasePage(Page page) {
         this.page = page;
 
+    }
+
+    protected BasePage() {
     }
 
     protected void click(String selector) {
