@@ -7,6 +7,8 @@ import com.microsoft.playwright.Playwright;
 import com.microsoft.playwright.Tracing;
 import org.testng.annotations.*;
 import pages.LoginPage;
+import pages.TestCasePage;
+import pages.ProjectsPage;
 
 import java.nio.file.Paths;
 
@@ -17,6 +19,8 @@ public class TestBase {
     protected static Browser browser;
     protected Page page;
     protected LoginPage loginPage;
+    protected TestCasePage testCasePage;
+    protected ProjectsPage projectPage;
 
     @BeforeSuite
     public static void setupClass() {
@@ -39,6 +43,8 @@ public class TestBase {
             .setSnapshots(true)
             .setSources(true));
         loginPage = new LoginPage(page);
+        testCasePage = new TestCasePage(page);
+        projectPage = new ProjectsPage(page);
         loginPage.navigateToLogin(getBaseUrl());
     }
 
