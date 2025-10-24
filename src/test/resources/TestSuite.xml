@@ -3,6 +3,8 @@
     <test name="tests.LoginTests">
         <classes>
             <class name="tests.LoginTests"/>
+            <class name="tests.DashboardTests"/>
+            <class name="tests.TestCasesTests"/>
         </classes>
     </test>
 </suite>
