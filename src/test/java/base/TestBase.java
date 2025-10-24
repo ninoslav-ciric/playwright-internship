@@ -8,15 +8,23 @@ import com.microsoft.playwright.Tracing;
 import org.testng.annotations.*;
 import pages.LoginPage;
 
+import java.nio.ByteBuffer;
 import java.nio.file.Paths;
+import java.util.Base64;
 
-import static utils.ConfigReader.getBaseUrl;
+import static utils.ConfigReader.*;
 
 public class TestBase {
     protected static Playwright playwright;
     protected static Browser browser;
     protected Page page;
     protected LoginPage loginPage;
+
+    protected String generateBase64() {
+        ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES);
+        buffer.putLong(System.currentTimeMillis());
+        return Base64.getEncoder().encodeToString(buffer.array());
+    }
 
     @BeforeSuite
     public static void setupClass() {

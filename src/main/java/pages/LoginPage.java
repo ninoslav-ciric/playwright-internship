@@ -50,6 +50,14 @@ public class LoginPage extends BasePage {
         }
     }
 
+    public void loginExpectFailure(String username, String password) {
+        try {
+            fillLoginFormWithLocators(username, password);
+        } catch (Exception e) {
+            Assert.fail("Login failure flow failed: " + e.getMessage());
+        }
+    }
+
     //Selector approach
     private void fillLoginForm(String username, String password) {
         try {
