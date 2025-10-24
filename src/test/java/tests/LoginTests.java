@@ -4,8 +4,7 @@ import assertion.LoginPageAsserts;
 import base.TestBase;
 import org.testng.annotations.Test;
 
-import static utils.ConfigReader.getValidEmail;
-import static utils.ConfigReader.getValidPassword;
+import static utils.ConfigReader.*;
 
 
 public class LoginTests extends TestBase {
@@ -16,9 +15,7 @@ public class LoginTests extends TestBase {
     public void testValidLogin() {
 
         loginPage.loginExpectSuccess(getValidEmail(), getValidPassword());
-
         LoginPageAsserts loginPageAsserts = new LoginPageAsserts();
         loginPageAsserts.validateLogin(loginPage);
-
     }
 }
