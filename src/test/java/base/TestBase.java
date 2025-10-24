@@ -1,28 +1,30 @@
 package base;
 
-import com.microsoft.playwright.Browser;
-import com.microsoft.playwright.BrowserType;
-import com.microsoft.playwright.Page;
-import com.microsoft.playwright.Playwright;
-import com.microsoft.playwright.Tracing;
+import com.microsoft.playwright.*;
+import org.testng.Assert;
 import org.testng.annotations.*;
+import pages.DashboardPage;
 import pages.LoginPage;
+import pages.PlaygroundPage;
+import pages.TestCasePage;
 
 import java.nio.file.Paths;
 
-import static utils.ConfigReader.getBaseUrl;
+import static utils.ConfigReader.*;
 
 public class TestBase {
     protected static Playwright playwright;
     protected static Browser browser;
     protected Page page;
     protected LoginPage loginPage;
+    protected TestCasePage testCasePage;
+    protected DashboardPage dashboardPage;
+    protected PlaygroundPage playgroundPage;
 
     @BeforeSuite
     public static void setupClass() {
         playwright = Playwright.create();
         browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false));
-
     }
 
     @AfterSuite
@@ -40,6 +42,11 @@ public class TestBase {
             .setSources(true));
         loginPage = new LoginPage(page);
         loginPage.navigateToLogin(getBaseUrl());
+        testCasePage = new TestCasePage(page);
+        dashboardPage = new DashboardPage(page);
+        playgroundPage = new PlaygroundPage(page);
+
+
     }
 
     @AfterMethod
@@ -54,4 +61,20 @@ public class TestBase {
         }
         page.close();
     }
-}
+
+    public void login(){
+        loginPage.loginExpectSuccess(getValidEmail(), getValidPassword());
+        Assert.assertTrue(loginPage.isDashboardVisible(), "Dashboard should be visible");
+    }
+
+    public void navigateToTestCasePage(){
+        dashboardPage.getMenuItemByName("Test Cases").click();
+        Assert.assertTrue(testCasePage.isTestcasePageVisible(), "Test case page should be visible");
+    }
+
+    public void navigateToPlaygroundPage(){
+        dashboardPage.getMenuItemByName("Playground").click();
+        Assert.assertTrue(playgroundPage.isPlaygroundPageVisible(), "Playground page should be visible");
+    }
+
+ }

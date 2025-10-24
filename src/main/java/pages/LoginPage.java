@@ -6,8 +6,6 @@ import com.microsoft.playwright.TimeoutError;
 import com.microsoft.playwright.options.AriaRole;
 import org.testng.Assert;
 
-import static utils.ConfigReader.getValidEmail;
-import static utils.ConfigReader.getValidPassword;
 import static utils.Timeouts.DEFAULT_TIMEOUT;
 
 public class LoginPage extends BasePage {
@@ -27,6 +25,7 @@ public class LoginPage extends BasePage {
     private final Locator passwordInput =  page.getByPlaceholder("Password");
     private final Locator loginButton = page.getByRole(AriaRole.BUTTON,
             new Page.GetByRoleOptions().setName("Login"));
+
 
     public LoginPage(Page page) {
         super(page);
