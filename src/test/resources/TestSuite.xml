@@ -5,4 +5,14 @@
             <class name="tests.LoginTests"/>
         </classes>
     </test>
+    <test name="tests.AddTestCaseTests">
+        <classes>
+            <class name="tests.AddTestCaseTests"/>
+        </classes>
+    </test>
+    <test name="tests.ManageProjectsTests">
+        <classes>
+            <class name="tests.ManageProjectsTests"/>
+        </classes>
+    </test>
 </suite>

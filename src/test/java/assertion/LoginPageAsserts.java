@@ -3,13 +3,7 @@ package assertion;
 import org.testng.asserts.SoftAssert;
 import pages.LoginPage;
 
-public class LoginPageAsserts {
-
-    private final SoftAssert softAssert;
-
-    public LoginPageAsserts() {
-        this.softAssert = new SoftAssert();
-    }
+public class LoginPageAsserts extends AssertsBase {
 
     public void validateLogin(LoginPage loginPage) {
 
@@ -17,4 +11,12 @@ public class LoginPageAsserts {
         softAssert.assertTrue(loginPage.getCurrentUrl().contains("/dashboard"), "URL should contain dashboard");
         softAssert.assertAll();
     }
+
+    public void invalidateLogin(LoginPage loginPage) {
+
+        softAssert.assertNotNull(loginPage.getErrorMessage());
+        softAssert.assertAll();
+    }
+
+
 }
