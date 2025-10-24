@@ -6,7 +6,9 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
 import com.microsoft.playwright.Tracing;
 import org.testng.annotations.*;
+import pages.EditProjectPage;
 import pages.LoginPage;
+import pages.NewProjectPage;
 
 import java.nio.file.Paths;
 
@@ -18,16 +20,22 @@ public class TestBase {
     protected Page page;
     protected LoginPage loginPage;
 
+    protected NewProjectPage newProjectPage;
+    protected EditProjectPage editProjectPage;
+
     @BeforeSuite
     public static void setupClass() {
         playwright = Playwright.create();
-        browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false));
+        browser = playwright.chromium()
+                            .launch(new BrowserType.LaunchOptions()
+                            .setHeadless(false)
+                            .setSlowMo(500));
 
     }
 
     @AfterSuite
     public static void tearDownClass() {
-        browser.close();
+        //browser.close();
         playwright.close();
     }
 
@@ -40,6 +48,9 @@ public class TestBase {
             .setSources(true));
         loginPage = new LoginPage(page);
         loginPage.navigateToLogin(getBaseUrl());
+
+        newProjectPage = new NewProjectPage(page);
+        editProjectPage = new EditProjectPage(page);
     }
 
     @AfterMethod
@@ -52,6 +63,6 @@ public class TestBase {
         } else {
             page.context().tracing().stop();
         }
-        page.close();
+       // page.close();
     }
 }
