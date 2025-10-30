@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
+import static utils.Allure.logStep;
 import static utils.ConfigReader.getBaseUrl;
 
 public class ProjectsPage extends LoggedInPage{
@@ -21,6 +22,7 @@ public class ProjectsPage extends LoggedInPage{
     private final Locator portraitGrid = page.locator("div.portrait-grid");
     private final Locator people_selector = page.locator("button[data-testid='picky-input']").first();
     private final Locator people_submit_btn = page.locator("div.project-top-people>div.submit-button>button");
+    private final Locator back_btn = page.locator("a.navigate-left[href='/projects']");
 
     public ProjectsPage(Page page) {
         super(page);
@@ -28,86 +30,87 @@ public class ProjectsPage extends LoggedInPage{
 
     @Override
     public void goTo() {
+        logStep("Opening projects page");
         page.navigate(pageURL);
     }
 
     private void openCreateModal(){
-        addNew_btn.click();
+        logStep("Opening create project modal");
+        safeLocatorClick(addNew_btn);
     }
 
-    public void createProjectTitle(){
+    private String createProjectTitle() {
         openCreateModal();
-        String projectsTitle = "Project " + ThreadLocalRandom.current().nextInt(1,1_000);
-        title_input.fill(projectsTitle);
-        title_submit_btn.click();
+        String projectsTitle = "Project " + ThreadLocalRandom.current().nextInt(1, 1_000);
+        logStep("Submitting project title: " + projectsTitle);
+        safeFill("input[name='title']", projectsTitle);
+        safeLocatorClick(title_submit_btn);
+        return projectsTitle;
     }
 
-    public List<String> getAllPersonsNames(){
-        return page.locator("div.person-container-bottom--teams-people--person-name")
-                .all()
-                .stream()
-                .map(Locator::textContent)
-                .toList();
+    public Locator createProjectTitleOnly(){
+        String projectTitle = createProjectTitle();
+        back_btn.click();
+        return findProjectByTitle(projectTitle);
     }
 
-    public String getExistingPersonName(){
-        page.locator("div.person-container-bottom--teams-people--person-name").nth(0)
-                .waitFor(new Locator.WaitForOptions()
-                        .setState(WaitForSelectorState.VISIBLE)
-                        .setTimeout(1000));
-        List<String> person_names = getAllPersonsNames();
-        int randIdx = ThreadLocalRandom.current().nextInt(0, person_names.size()-1);
-        return person_names.get(randIdx);
+    public String getExistingPersonName() {
+        logStep("Getting a random existing person's name");
+
+        Locator personLocator = page.locator("div.person-container-bottom--teams-people--person-name");
+
+        waitForVisible(personLocator.first(), 1000);
+
+        List<String> personNames = getTextListFromLocator(personLocator);
+
+        if (personNames.isEmpty()) {
+            throw new RuntimeException("No person names found on the page.");
+        }
+
+        int randIdx = ThreadLocalRandom.current().nextInt(personNames.size());
+        return personNames.get(randIdx);
     }
 
     public Locator getPersonErrorMessage(){ return person_error_message; }
 
     public void createNewExistingPerson(){
         String name = getExistingPersonName();
+        logStep("Filling out the form with existing persons' name");
         person_name_input.fill(name);
         person_submit_btn.click();
     }
 
-    public void createProject(){
+    public void createProjectExistingPerson(){
         createProjectTitle();
         createNewExistingPerson();
     }
 
-    public List<Locator> getAllProjects(){
-        return portraitGrid.locator("a.preview-card").all();
-    }
+    public List<String> addPeopleOnProject(Locator project) {
+        logStep("Adding people on project");
+        safeScrollAndClick(project);
+        safeLocatorClick(people_selector);
 
-    public List<String> addPeopleOnProject(Locator project){
-        project.click();
-        people_selector.click();
-        page
-                .locator("div#picky-list")
-                .locator("div#picky-option-selectall[data-selectall='true']")
-                .nth(0)
-                .waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE).setTimeout(1000));
-        Locator selectAll = page
-                .locator("div#picky-list")
-                .locator("div#picky-option-selectall[data-selectall='true']")
-                .first();
-        List<String> selectedNames = page.locator("div[data-testid='dropdown']")
-                .locator("div[data-testid='option']")
-                .all()
-                        .stream()
-                                .map(Locator::textContent)
-                                        .toList();
-        selectAll.click();
-        people_submit_btn.scrollIntoViewIfNeeded();
-        people_submit_btn.click();
+        Locator selectAll = page.locator("div#picky-list div#picky-option-selectall[data-selectall='true']").first();
+        waitForVisible(selectAll, 1000);
+
+        List<String> selectedNames = getTextListFromLocator(page.locator("div[data-testid='dropdown'] div[data-testid='option']"));
+        safeLocatorClick(selectAll);
+        safeScrollAndClick(people_submit_btn);
         page.goBack();
         return selectedNames;
     }
 
-    public Locator findProjectByTitle(String title){
-        List<Locator> projects = getAllProjects();
-        for(Locator project : projects){
-            String actual_title = project.locator("div.preview-card-title-value").textContent();
-            if(Objects.equals(actual_title, title)){
-                return project;
+    public Locator findProjectByTitle(String title) {
+        logStep("Searching for project with title: " + title);
+        page.waitForSelector("a.preview-card");
+        Locator projectCards = portraitGrid.locator("a.preview-card");
+        int count = projectCards.count();
+
+        for (int i = 0; i < count; i++) {
+            Locator card = projectCards.nth(i);
+            String actualTitle = card.locator("div.preview-card-title-value").textContent();
+            if (title.equals(actualTitle)) {
+                return card;
             }
         }
         return null;
@@ -117,15 +120,12 @@ public class ProjectsPage extends LoggedInPage{
         return locator.locator("div.preview-card-body--items-single-preview-title");
     }
 
-    public List<String> getPersonNamesInPreview(){
-        page.locator("div.modal-body").locator("div.project-container-bottom--teams-people--person-name")
-                .nth(0)
-                .waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
+    public List<String> getPersonNamesInPreview() {
+        logStep("Getting all person names from modal");
 
-        return page.locator("div.modal-body").locator("div.project-container-bottom--teams-people--person-name")
-                .all()
-                .stream()
-                .map(Locator::textContent)
-                .toList();
+        Locator peopleLocator = page.locator("div.modal-body div.project-container-bottom--teams-people--person-name");
+
+        waitForVisible(peopleLocator.first(), 1000);
+        return safeGetAllTextFromLocator(peopleLocator);
     }
 }

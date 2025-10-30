@@ -9,9 +9,11 @@ import pages.TestCasesPage;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
+import static utils.Allure.logStep;
+
 public class TestCasesPageTests extends TestBase {
 
-    @Test(groups = {"UI"},
+    @Test(groups = {"UI", "Regression"},
             description = "Verify successful deletion of test cases"
     )
     public void testDeleteAllTestCases() {
@@ -31,7 +33,8 @@ public class TestCasesPageTests extends TestBase {
                 testCase.scrollIntoViewIfNeeded();
                 if (testCase.isVisible()) {
                     testCase.click();
-                    String caseID = testCasesPage.deleteCase();
+                    logStep("Clicking on test case");
+                    testCasesPage.deleteCase();
                     testCasesAsserts.assertToastMessage(testCasesPage.getSuccessToast(),"Successful toast must be shown after deletion of test case");
                 }
             } catch (Exception e) {
@@ -43,7 +46,7 @@ public class TestCasesPageTests extends TestBase {
         testCasesAsserts.assertAllTestCasesDeleted(testCasesPage);
     }
 
-    @Test(groups = {"UI"},
+    @Test(groups = {"UI", "Smoke", "Positive"},
     description = "Verify creation of new test case works")
     public void testCreateNewTestCase() {
         currentPage = new TestCasesPage(page);
@@ -58,7 +61,7 @@ public class TestCasesPageTests extends TestBase {
     }
 
     @Test(
-            groups = {"UI"},
+            groups = {"UI", "Negative"},
             description = "Verify failing creation of duplicate test case"
     )
     public void testCreatingExistingTextCase(){

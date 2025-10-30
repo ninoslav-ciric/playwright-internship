@@ -5,6 +5,7 @@ import com.microsoft.playwright.Page;
 
 import java.util.List;
 
+import static utils.Allure.logStep;
 import static utils.ConfigReader.getBaseUrl;
 
 public class DashboardPage extends LoggedInPage {
@@ -18,7 +19,8 @@ public class DashboardPage extends LoggedInPage {
 
     @Override
     public void goTo() {
-        page.navigate(pageURL);
+        logStep("Opening Dashboard page");
+        safeNavigate(pageURL);
     }
 
     public List<Locator> getCardsFromGrid(){

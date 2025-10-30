@@ -8,6 +8,7 @@ import com.microsoft.playwright.options.AriaRole;
 import constants.TokenConstants;
 import org.testng.Assert;
 
+import static utils.Allure.logStep;
 import static utils.ConfigReader.getBaseUrl;
 import static utils.ConfigReader.getValidEmail;
 import static utils.Timeouts.DEFAULT_TIMEOUT;
@@ -40,6 +41,7 @@ public class LoginPage extends BasePage {
 
     @Override
     public void goTo() {
+        logStep("Opening login page");
         page.navigate(currentURL);
     }
 

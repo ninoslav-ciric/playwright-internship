@@ -7,8 +7,11 @@ import com.microsoft.playwright.Playwright;
 import com.microsoft.playwright.Tracing;
 import org.testng.annotations.*;
 import pages.BasePage;
+import utils.Allure;
 
 import java.nio.file.Paths;
+
+import static utils.Allure.logStep;
 
 public class TestBase {
     protected static Playwright playwright;
@@ -16,29 +19,30 @@ public class TestBase {
     protected Page page;
     protected BasePage currentPage;
 
-    @BeforeSuite
+    @BeforeSuite(alwaysRun = true)
     public static void setupClass() {
         playwright = Playwright.create();
         browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false));
 
     }
 
-    @AfterSuite
+    @AfterSuite(alwaysRun = true)
     public static void tearDownClass() {
         browser.close();
         playwright.close();
     }
 
-    @BeforeMethod
+    @BeforeMethod(alwaysRun = true)
     public void setup() {
         page = browser.newPage();
+        logStep("Opening new page");
         page.context().tracing().start(new Tracing.StartOptions()
             .setScreenshots(true)
             .setSnapshots(true)
             .setSources(true));
     }
 
-    @AfterMethod
+    @AfterMethod(alwaysRun = true)
     public void tearDown(org.testng.ITestResult result) {
         if (result.getStatus() == org.testng.ITestResult.FAILURE) {
             String tracePath = "target/playwright-report/trace-" + System.currentTimeMillis() + ".zip";

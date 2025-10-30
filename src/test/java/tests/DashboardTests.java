@@ -11,7 +11,7 @@ import java.util.List;
 
 public class DashboardTests extends TestBase {
     @Test(
-            groups = {"UI"},
+            groups = {"UI", "Smoke", "Functional"},
             description = "Verify every link in card grid works, on dashboard page"
     )
     public void verifyAllLinksInCardGrid(){
