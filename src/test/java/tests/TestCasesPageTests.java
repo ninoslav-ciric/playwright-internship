@@ -3,22 +3,20 @@ package tests;
 import assertion.TestCasesAsserts;
 import base.TestBase;
 import com.microsoft.playwright.Locator;
+import io.qameta.allure.Allure;
+import io.qameta.allure.Description;
 import org.testng.annotations.Test;
 import pages.TestCasesPage;
 
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-import static utils.Allure.logStep;
-
 public class TestCasesPageTests extends TestBase {
 
-    @Test(groups = {"UI", "Regression"},
-            description = "Verify successful deletion of test cases"
-    )
+    @Test(groups = {"UI", "Regression"})
+    @Description("Verify successful deletion of test cases")
     public void testDeleteAllTestCases() {
-        currentPage = new TestCasesPage(page);
-        TestCasesPage testCasesPage = (TestCasesPage) currentPage;
+        TestCasesPage testCasesPage = new TestCasesPage(page);
         TestCasesAsserts testCasesAsserts = new TestCasesAsserts();
         testCasesPage.goTo();
 
@@ -33,7 +31,7 @@ public class TestCasesPageTests extends TestBase {
                 testCase.scrollIntoViewIfNeeded();
                 if (testCase.isVisible()) {
                     testCase.click();
-                    logStep("Clicking on test case");
+                    Allure.step("Clicking on test case");
                     testCasesPage.deleteCase();
                     testCasesAsserts.assertToastMessage(testCasesPage.getSuccessToast(),"Successful toast must be shown after deletion of test case");
                 }
@@ -46,11 +44,10 @@ public class TestCasesPageTests extends TestBase {
         testCasesAsserts.assertAllTestCasesDeleted(testCasesPage);
     }
 
-    @Test(groups = {"UI", "Smoke", "Positive"},
-    description = "Verify creation of new test case works")
+    @Test(groups = {"UI", "Smoke", "Positive"})
+    @Description("Verify creation of new test case works")
     public void testCreateNewTestCase() {
-        currentPage = new TestCasesPage(page);
-        TestCasesPage testCasesPage = (TestCasesPage) currentPage;
+        TestCasesPage testCasesPage = new TestCasesPage(page);
         TestCasesAsserts testCasesAsserts = new TestCasesAsserts();
         testCasesPage.goTo();
 
@@ -60,13 +57,10 @@ public class TestCasesPageTests extends TestBase {
         testCasesAsserts.assertToastMessage(testCasesPage.getSuccessToast(), "Successful toast must be present after adding a test case");
     }
 
-    @Test(
-            groups = {"UI", "Negative"},
-            description = "Verify failing creation of duplicate test case"
-    )
+    @Test(groups = {"UI", "Negative"})
+    @Description("Verify failing creation of duplicate test case")
     public void testCreatingExistingTextCase(){
-        currentPage = new TestCasesPage(page);
-        TestCasesPage testCasesPage = (TestCasesPage) currentPage;
+        TestCasesPage testCasesPage = new TestCasesPage(page);
         TestCasesAsserts testCasesAsserts = new TestCasesAsserts();
         testCasesPage.goTo();
 

@@ -3,6 +3,7 @@ package tests;
 import assertion.ProjectsPageAssertions;
 import base.TestBase;
 import com.microsoft.playwright.Locator;
+import io.qameta.allure.Description;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import pages.ProjectsPage;
@@ -11,12 +12,11 @@ import java.util.List;
 
 public class ProjectsPageTests extends TestBase {
     @Test(
-            groups = {"UI", "Negative"},
-            description = "Validates that creating a new project with an already existing person triggers the appropriate error message."
+            groups = {"UI", "Negative"}
     )
+    @Description("Validates that creating a new project with an already existing person triggers the appropriate error message.")
     public void testCreateNewProjectExistingPerson(){
-        currentPage = new ProjectsPage(page);
-        ProjectsPage projectsPage = (ProjectsPage) currentPage;
+        ProjectsPage projectsPage = new ProjectsPage(page);
         ProjectsPageAssertions projectsPageAssertions = new ProjectsPageAssertions();
         projectsPage.goTo();
 
@@ -26,12 +26,11 @@ public class ProjectsPageTests extends TestBase {
     }
 
     @Test(
-            groups = {"UI", "Functional", "Positive"},
-            description = "Verify that all existing persons are correctly added to the first project in the list."
+            groups = {"UI", "Functional", "Positive"}
     )
+    @Description("Verify that all existing persons are correctly added to the first project in the list.")
     public void testAddAllPersonsIntoFirstProject(){
-        currentPage = new ProjectsPage(page);
-        ProjectsPage projectsPage = (ProjectsPage) currentPage;
+        ProjectsPage projectsPage = new ProjectsPage(page);
         ProjectsPageAssertions projectsPageAssertions = new ProjectsPageAssertions();
         projectsPage.goTo();
 

@@ -4,6 +4,7 @@ import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.PlaywrightException;
 import com.microsoft.playwright.options.WaitForSelectorState;
+import io.qameta.allure.Allure;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,20 +33,23 @@ public class TestCasesPage extends LoggedInPage{
 
     @Override
     public void goTo() {
-        logStep("Opening Test cases page");
+        Allure.step("Opening Test cases page");
+        takeScreenshot("testcases-navigate");
         safeNavigate(pageURL);
     }
 
     public List<Locator> getAllTestCases() {
-        logStep("Getting all test cases");
+        Allure.step("Getting all test cases");
 
         try {
             noContent_locator.waitFor(new Locator.WaitForOptions()
                     .setState(WaitForSelectorState.VISIBLE)
                     .setTimeout(2000));
+            takeScreenshot("testcases-get-all-no-content");
             return new ArrayList<>();
         } catch (PlaywrightException e) {
             waitForVisible(portraitGrid, 1000);
+            takeScreenshot("testcases-get-all");
             return portraitGrid.locator("a.preview-card").all();
         }
     }
@@ -74,7 +78,7 @@ public class TestCasesPage extends LoggedInPage{
     public Locator getRemoveTestCaseButtonPopup(){return page.locator("div.confirmation-dialog--buttons--confirm");}
 
     public void fillCreationForm(String title, String description, String expectedResult, List<Number> list_steps){
-        logStep("Filling out creation form");
+        Allure.step("Filling out creation form");
 
         safeFill("input[name='title']", title);
         safeFill("textarea[name='description']", description);
@@ -87,10 +91,11 @@ public class TestCasesPage extends LoggedInPage{
                 safeLocatorClick(addNewStep_btn);
             }
         }
+        takeScreenshot("testcases-fill-form");
     }
 
     public void createNewTestCase(String title,String description, String expectedResult){
-        logStep("Creating new test with title:" + title + "\tand description: " + description);
+        Allure.step("Creating new test with title:" + title + "\tand description: " + description);
         safeLocatorClick(createNewBtn);
         ArrayList<Number> steps = new ArrayList<>();
         for(int i = 0;i<10;i++){
@@ -98,11 +103,12 @@ public class TestCasesPage extends LoggedInPage{
         }
         fillCreationForm(title, description, expectedResult, steps);
         safeLocatorClick(submit_btn);
+        takeScreenshot("testcases-new-title");
     }
 
     public String deleteCase() throws Exception {
         String caseID = getCaseIDFromURL();
-        logStep("Deleting test case with ID: "+caseID);
+        Allure.step("Deleting test case with ID: "+caseID);
 
         Locator deleteBtn = verifyIndividualPage(page);
         safeLocatorClick(deleteBtn);
@@ -110,6 +116,7 @@ public class TestCasesPage extends LoggedInPage{
         Locator confirmDeleteBtn = getRemoveTestCaseButtonPopup();
         safeLocatorClick(confirmDeleteBtn);
 
+        takeScreenshot("testcases-delete-case");
         return caseID;
     }
 

@@ -6,6 +6,7 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.TimeoutError;
 import com.microsoft.playwright.options.AriaRole;
 import constants.TokenConstants;
+import io.qameta.allure.Allure;
 import org.testng.Assert;
 
 import static utils.Allure.logStep;
@@ -41,7 +42,7 @@ public class LoginPage extends BasePage {
 
     @Override
     public void goTo() {
-        logStep("Opening login page");
+        Allure.step("Opening login page");
         page.navigate(currentURL);
     }
 

@@ -5,20 +5,17 @@ import com.microsoft.playwright.BrowserType;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
 import com.microsoft.playwright.Tracing;
+import org.testng.ITestResult;
 import org.testng.annotations.*;
-import pages.BasePage;
-import utils.Allure;
+import io.qameta.allure.Allure;
 
 import java.nio.file.Paths;
-
-import static utils.Allure.logStep;
 
 @Listeners({io.qameta.allure.testng.AllureTestNg.class})
 public class TestBase {
     protected static Playwright playwright;
     protected static Browser browser;
     protected Page page;
-    protected BasePage currentPage;
 
     @BeforeSuite(alwaysRun = true)
     public static void setupClass() {
@@ -34,13 +31,18 @@ public class TestBase {
     }
 
     @BeforeMethod(alwaysRun = true)
-    public void setup() {
+    public void setup(ITestResult result) {
         page = browser.newPage();
-        logStep("Opening new page");
+        Allure.step("Opening new page");
         page.context().tracing().start(new Tracing.StartOptions()
             .setScreenshots(true)
             .setSnapshots(true)
             .setSources(true));
+
+        String[] groups = result.getMethod().getGroups();
+        for (String group : groups) {
+            Allure.label("group", group);
+        }
     }
 
     @AfterMethod(alwaysRun = true)

@@ -3,6 +3,7 @@ package pages;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.WaitForSelectorState;
+import io.qameta.allure.Allure;
 
 import java.util.List;
 import java.util.Objects;
@@ -30,21 +31,24 @@ public class ProjectsPage extends LoggedInPage{
 
     @Override
     public void goTo() {
-        logStep("Opening projects page");
+        Allure.step("Opening projects page");
         page.navigate(pageURL);
+        takeScreenshot("projects-navigate");
     }
 
     private void openCreateModal(){
-        logStep("Opening create project modal");
+        Allure.step("Opening create project modal");
         safeLocatorClick(addNew_btn);
+        takeScreenshot("projects-open-modal");
     }
 
     private String createProjectTitle() {
         openCreateModal();
         String projectsTitle = "Project " + ThreadLocalRandom.current().nextInt(1, 1_000);
-        logStep("Submitting project title: " + projectsTitle);
+        Allure.step("Submitting project title: " + projectsTitle);
         safeFill("input[name='title']", projectsTitle);
         safeLocatorClick(title_submit_btn);
+        takeScreenshot("projects-submit-title");
         return projectsTitle;
     }
 
@@ -55,7 +59,7 @@ public class ProjectsPage extends LoggedInPage{
     }
 
     public String getExistingPersonName() {
-        logStep("Getting a random existing person's name");
+        Allure.step("Getting a random existing person's name");
 
         Locator personLocator = page.locator("div.person-container-bottom--teams-people--person-name");
 
@@ -75,7 +79,7 @@ public class ProjectsPage extends LoggedInPage{
 
     public void createNewExistingPerson(){
         String name = getExistingPersonName();
-        logStep("Filling out the form with existing persons' name");
+        Allure.step("Filling out the form with existing persons' name");
         person_name_input.fill(name);
         person_submit_btn.click();
     }
@@ -86,7 +90,7 @@ public class ProjectsPage extends LoggedInPage{
     }
 
     public List<String> addPeopleOnProject(Locator project) {
-        logStep("Adding people on project");
+        Allure.step("Adding people on project");
         safeScrollAndClick(project);
         safeLocatorClick(people_selector);
 
@@ -101,7 +105,7 @@ public class ProjectsPage extends LoggedInPage{
     }
 
     public Locator findProjectByTitle(String title) {
-        logStep("Searching for project with title: " + title);
+        Allure.step("Searching for project with title: " + title);
         page.waitForSelector("a.preview-card");
         Locator projectCards = portraitGrid.locator("a.preview-card");
         int count = projectCards.count();
@@ -121,7 +125,7 @@ public class ProjectsPage extends LoggedInPage{
     }
 
     public List<String> getPersonNamesInPreview() {
-        logStep("Getting all person names from modal");
+        Allure.step("Getting all person names from modal");
 
         Locator peopleLocator = page.locator("div.modal-body div.project-container-bottom--teams-people--person-name");
 

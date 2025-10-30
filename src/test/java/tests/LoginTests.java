@@ -2,6 +2,7 @@ package tests;
 
 import assertion.LoginPageAsserts;
 import base.TestBase;
+import io.qameta.allure.Description;
 import org.testng.annotations.Test;
 import pages.LoginPage;
 import utils.TokenHandler;
@@ -10,12 +11,11 @@ import static utils.ConfigReader.*;
 
 public class LoginTests extends TestBase {
 
-    @Test(groups = {"smoke", "UI"},
-            description = "Verify successful login with valid credentials"
+    @Test(groups = {"Smoke", "UI"}
     )
+    @Description("Verify successful login with valid credentials")
     public void testValidLogin() {
-        currentPage = new LoginPage(page);
-        LoginPage loginPage = (LoginPage) currentPage;
+        LoginPage loginPage = new LoginPage(page);
         loginPage.navigateToLogin(getBaseUrl());
         loginPage.loginExpectSuccess(getValidEmail(), getValidPassword());
 
