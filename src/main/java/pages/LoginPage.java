@@ -1,14 +1,20 @@
 package pages;
 
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.TimeoutError;
 import com.microsoft.playwright.options.AriaRole;
+import constants.TokenConstants;
+import io.qameta.allure.Allure;
 import org.testng.Assert;
 
+import static utils.Allure.logStep;
+import static utils.ConfigReader.getBaseUrl;
 import static utils.ConfigReader.getValidEmail;
-import static utils.ConfigReader.getValidPassword;
 import static utils.Timeouts.DEFAULT_TIMEOUT;
+
+import com.auth0.jwt.JWT;
 
 public class LoginPage extends BasePage {
     //Selectors
@@ -28,8 +34,16 @@ public class LoginPage extends BasePage {
     private final Locator loginButton = page.getByRole(AriaRole.BUTTON,
             new Page.GetByRoleOptions().setName("Login"));
 
+    private String currentURL = getBaseUrl() + "/login";
+
     public LoginPage(Page page) {
         super(page);
+    }
+
+    @Override
+    public void goTo() {
+        Allure.step("Opening login page");
+        page.navigate(currentURL);
     }
 
     public void navigateToLogin(String url) {
@@ -65,9 +79,7 @@ public class LoginPage extends BasePage {
     //Locator approach
     private void fillLoginFormWithLocators(String username, String password) {
         try {
-            usernameInput.click();
             usernameInput.fill(username);
-            passwordInput.click();
             passwordInput.fill(password);
             loginButton.click();
         }
@@ -101,7 +113,25 @@ public class LoginPage extends BasePage {
         }
     }
 
-    public String getCurrentUrl() {
-        return page.url();
+    private String loadFromLocalStorage(String val){ return (String) page.evaluate("() => window.localStorage.getItem('" + val + "')"); }
+
+    public String getAuthToken(){ return loadFromLocalStorage(TokenConstants.SANDBOX_TOKEN); }
+
+    public String getRefreshToken(){ return loadFromLocalStorage(TokenConstants.SANDBOX_REFRESH_TOKEN); }
+
+    public DecodedJWT getDecodedAuthToken(){ return JWT.decode(getAuthToken());}
+
+    public boolean isTokenNotExpired(DecodedJWT jwt) {
+        return jwt.getExpiresAt() != null && jwt.getExpiresAt().getTime() > System.currentTimeMillis();
+    }
+
+    public boolean isEmailValid(DecodedJWT jwt) {
+        String email = jwt.getClaim("email").asString();
+        return email != null && !email.isEmpty() && email.equals(getValidEmail());
+    }
+
+    public boolean isActive(DecodedJWT jwt) {
+        Boolean active = jwt.getClaim("active").asBoolean();
+        return active != null && active;
     }
 }

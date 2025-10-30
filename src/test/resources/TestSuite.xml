@@ -1,8 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <suite name="TestSuite">
-    <test name="tests.LoginTests">
+    <test name="UI Tests">
+        <groups>
+            <run>
+                <include name="UI"/>
+                <include name="Regression"/>
+                <include name="Smoke"/>
+                <include name="Functional"/>
+                <include name="Negative"/>
+                <include name="Positive"/>
+            </run>
+        </groups>
         <classes>
             <class name="tests.LoginTests"/>
+            <class name="tests.ProjectsPageTests"/>
+            <class name="tests.TestCasesPageTests"/>
+            <class name="tests.DashboardTests"/>
         </classes>
     </test>
 </suite>

@@ -5,44 +5,47 @@ import com.microsoft.playwright.BrowserType;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
 import com.microsoft.playwright.Tracing;
+import org.testng.ITestResult;
 import org.testng.annotations.*;
-import pages.LoginPage;
+import io.qameta.allure.Allure;
 
 import java.nio.file.Paths;
 
-import static utils.ConfigReader.getBaseUrl;
-
+@Listeners({io.qameta.allure.testng.AllureTestNg.class})
 public class TestBase {
     protected static Playwright playwright;
     protected static Browser browser;
     protected Page page;
-    protected LoginPage loginPage;
 
-    @BeforeSuite
+    @BeforeSuite(alwaysRun = true)
     public static void setupClass() {
         playwright = Playwright.create();
         browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false));
 
     }
 
-    @AfterSuite
+    @AfterSuite(alwaysRun = true)
     public static void tearDownClass() {
         browser.close();
         playwright.close();
     }
 
-    @BeforeMethod
-    public void setup() {
+    @BeforeMethod(alwaysRun = true)
+    public void setup(ITestResult result) {
         page = browser.newPage();
+        Allure.step("Opening new page");
         page.context().tracing().start(new Tracing.StartOptions()
             .setScreenshots(true)
             .setSnapshots(true)
             .setSources(true));
-        loginPage = new LoginPage(page);
-        loginPage.navigateToLogin(getBaseUrl());
+
+        String[] groups = result.getMethod().getGroups();
+        for (String group : groups) {
+            Allure.label("group", group);
+        }
     }
 
-    @AfterMethod
+    @AfterMethod(alwaysRun = true)
     public void tearDown(org.testng.ITestResult result) {
         if (result.getStatus() == org.testng.ITestResult.FAILURE) {
             String tracePath = "target/playwright-report/trace-" + System.currentTimeMillis() + ".zip";
