@@ -70,9 +70,6 @@ public class DashboardPage extends BasePage {
     public void goToReports()    { menuReports.click(); }
 
 
-    public void waitForCardsToBeVisible() {
-        page.waitForTimeout(4000);
-    }
 
     public boolean isAvatarVisible() { return avatar.isVisible(); }
 
