@@ -1,8 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <suite name="TestSuite">
     <test name="tests.LoginTests">
+        <groups>
+            <run>
+                <include name = "smoke"/>
+            </run>
+        </groups>
         <classes>
             <class name="tests.LoginTests"/>
+        </classes>
+    </test>
+    <test name = "Positive and negative tests">
+        <groups>
+            <run>
+                <include name = "positive"/>
+                <include name = "negative"/>
+            </run>
+        </groups>
+        <classes>
+            <class name = "tests.TestCasesTest"/>
+            <class name = "tests.ReportsTest"/>
         </classes>
     </test>
 </suite>
