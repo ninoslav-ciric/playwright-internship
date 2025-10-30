@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="UISuite" verbose="1">
+  <test name="UI">
+    <groups>
+      <run>
+        <include name="UI"/>
+      </run>
+    </groups>
+    <packages>
+      <package name="tests"/>
+    </packages>
+  </test>
+</suite>

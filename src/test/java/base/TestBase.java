@@ -18,7 +18,7 @@ public class TestBase {
     protected Page page;
     protected LoginPage loginPage;
 
-    @BeforeSuite
+    @BeforeSuite(alwaysRun = true)
     public static void setupClass() {
         playwright = Playwright.create();
         browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false));
@@ -31,7 +31,7 @@ public class TestBase {
         playwright.close();
     }
 
-    @BeforeMethod
+    @BeforeMethod(alwaysRun = true)
     public void setup() {
         page = browser.newPage();
         page.context().tracing().start(new Tracing.StartOptions()
