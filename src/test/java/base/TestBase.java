@@ -13,6 +13,7 @@ import java.nio.file.Paths;
 
 import static utils.Allure.logStep;
 
+@Listeners({io.qameta.allure.testng.AllureTestNg.class})
 public class TestBase {
     protected static Playwright playwright;
     protected static Browser browser;

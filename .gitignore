@@ -39,3 +39,8 @@ build/
 
 src/main/resources/
 src/test/resources/
+
+./allure-results/*
+./screenshots/*
+./allure-report
+.allure
