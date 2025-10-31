@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="TestSuite">
+
+    <parameter name="project" value="htecqa"/>
+    <parameter name="version" value="1.0.0"/>
+
+    <test name="Security Tests">
+        <groups>
+            <run>
+                <include name="negative"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="tests.ProjectSecurityTests"/>
+            <class name="tests.TestCaseSecurityTests"/>
+        </classes>
+    </test>
+</suite>

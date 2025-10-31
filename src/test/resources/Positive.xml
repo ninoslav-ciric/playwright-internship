@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="TestSuite">
+
+    <parameter name="project" value="htecqa"/>
+    <parameter name="version" value="1.0.0"/>
+
+    <test name="Positive Tests">
+    <groups>
+        <run>
+            <include name="positive"/>
+        </run>
+    </groups>
+    <classes>
+        <class name="tests.ProjectTests"/>
+        <class name="tests.LoginTests"/>
+        <class name="tests.TestCaseTests"/>-->
+    </classes>
+    </test>
+
+<!--    <test name="Security Tests for TestCases Page">-->
+<!--    <groups>-->
+<!--        <run>-->
+<!--            <include name="smoke"/>-->
+<!--            <include name="UI"/>-->
+<!--            <include name="negative"/>-->
+<!--        </run>-->
+<!--    </groups>-->
+<!--    <classes>-->
+<!--        <class name="tests.TestCaseSecurityTests"/>-->
+<!--    </classes>-->
+<!--    </test>-->
+
+<!--    <test name="Positive Tests for TestCases Page">-->
+<!--    <groups>-->
+<!--        <run>-->
+<!--            <include name="smoke"/>-->
+<!--            <include name="UI"/>-->
+<!--            <include name="positive"/>-->
+<!--        </run>-->
+<!--    </groups>-->
+<!--    <classes>-->
+<!--        <class name="tests.TestCaseTests"/>-->
+<!--    </classes>-->
+<!--    </test>-->
+
+<!--    <test name="tests.LoginTests">-->
+<!--        <groups>-->
+<!--            <run>-->
+<!--                <include name="smoke"/>-->
+<!--                <include name="UI"/>-->
+<!--                <include name="positive"/>-->
+<!--            </run>-->
+<!--        </groups>-->
+<!--        <classes>-->
+<!--            <class name="tests.LoginTests"/>-->
+<!--        </classes>-->
+<!--    </test>-->
+</suite>
