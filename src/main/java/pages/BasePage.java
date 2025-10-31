@@ -2,6 +2,8 @@ package pages;
 
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.PlaywrightException;
+import io.qameta.allure.Attachment;
+
 import java.nio.file.Paths;
 
 public abstract class BasePage {
@@ -39,7 +41,6 @@ public abstract class BasePage {
             throw new RuntimeException("Failed to navigate to: " + url, e);
         }
     }
-
     protected void takeScreenshot(String name) {
         page.screenshot(new Page.ScreenshotOptions()
             .setPath(Paths.get("screenshots/" + name + ".png")));

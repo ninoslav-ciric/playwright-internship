@@ -1,8 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <suite name="TestSuite">
-    <test name="tests.LoginTests">
+    <test name="PositiveSmokeTests">
+        <groups>
+            <run>
+                <include name="positiveSmoke"/>
+            </run>
+        </groups>
         <classes>
             <class name="tests.LoginTests"/>
+            <class name="tests.DashboardTests"/>
+            <class name="tests.TestCasesTests"/>
+        </classes>
+    </test>
+    <test name="NegativeSmokeTests">
+        <groups>
+            <run>
+                <include name="negativeSmoke"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="tests.LoginTests"/>
+            <class name="tests.DashboardTests"/>
+            <class name="tests.TestCasesTests"/>
         </classes>
     </test>
 </suite>
