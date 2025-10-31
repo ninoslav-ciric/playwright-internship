@@ -10,7 +10,7 @@ import static utils.ConfigReader.getValidPassword;
 
 public class LoginTests extends TestBase {
 
-    @Test(groups = {"smoke", "UI"},
+    @Test(groups = {"smoke", "UI", "positive"},
         description = "Verify successful login with valid credentials"
     )
     public void testValidLogin() {

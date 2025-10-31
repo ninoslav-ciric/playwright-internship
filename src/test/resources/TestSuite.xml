@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<suite name="TestSuite">
-    <test name="tests.LoginTests">
-        <classes>
-            <class name="tests.LoginTests"/>
-        </classes>
-    </test>
-</suite>
