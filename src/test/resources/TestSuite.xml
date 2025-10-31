@@ -1,8 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <suite name="TestSuite">
     <test name="tests.LoginTests">
+        <groups>
+            <run>
+                <include name="negative"/>
+                <include name="positive"/>
+            </run>
+        </groups>
         <classes>
             <class name="tests.LoginTests"/>
+        </classes>
+    </test>
+    <test name="tests.testCases">
+        <groups>
+            <run>
+                <include name="negative"/>
+                <include name="skipped"/>
+                <include name="positive"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="tests.testCases.CreateTestCase"/>
+            <class name="tests.testCases.DeleteTestCase"/>
+        </classes>
+    </test>
+    <test name="tests.playground">
+        <groups>
+            <run>
+                <include name="negative"/>
+                <include name="positive"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="tests.playground.CreateProject"/>
+            <class name="tests.playground.DeleteProject"/>
         </classes>
     </test>
 </suite>
