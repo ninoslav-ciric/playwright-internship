@@ -11,7 +11,6 @@ target/
 *.iws
 *.iml
 *.ipr
-*.properties
 
 ### Eclipse ###
 .apt_generated
@@ -39,4 +38,3 @@ build/
 .DS_Store
 
 src/main/resources/
-src/test/resources/credentials.properties
