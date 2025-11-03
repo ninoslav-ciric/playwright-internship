@@ -26,6 +26,9 @@ public class ConfigReader {
 
     public static String getBaseUrl() { return config.getProperty("baseUrl"); }
 
+    public static String getDashboardUrl() { return config.getProperty("dashboardUrl"); }
+    public static String getTestCasesUrl() { return config.getProperty("testCasesUrl"); }
+
     //Agnostic approach, but needs to have well-defined property names, harder to read in code
     public static String getProperty(String key) {
         return config.getProperty(key);
