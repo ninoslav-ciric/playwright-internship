@@ -1,7 +1,11 @@
 package pages;
 
+import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.PlaywrightException;
+import com.microsoft.playwright.options.WaitForSelectorState;
+import utils.Timeouts;
+
 import java.nio.file.Paths;
 
 public abstract class BasePage {
@@ -20,6 +24,20 @@ public abstract class BasePage {
         page.fill(selector, text);
     }
 
+    protected void safeLocatorFill(Locator locator, String text)
+    {
+        try
+        {
+            locator.waitFor();
+            locator.fill(text);
+        }
+        catch(PlaywrightException e)
+        {
+            takeScreenshot("locator_fill_failure_" + System.currentTimeMillis());
+            throw new RuntimeException("Failed to fill using locator: " + locator, e);
+        }
+    }
+
     protected void safeClick(String selector) {
         try {
             page.waitForSelector(selector);
@@ -27,6 +45,20 @@ public abstract class BasePage {
         } catch (PlaywrightException e) {
             takeScreenshot("click_failure_" + System.currentTimeMillis());
             throw new RuntimeException("Failed to click: " + selector, e);
+        }
+    }
+
+    protected void safeLocatorClick(Locator locator)
+    {
+        try
+        {
+            locator.waitFor();
+            locator.click();
+        }
+        catch (PlaywrightException e)
+        {
+            takeScreenshot("click_failure_" + System.currentTimeMillis());
+            throw new RuntimeException("Failed to click locator: " + locator, e);
         }
     }
 
@@ -44,4 +76,21 @@ public abstract class BasePage {
         page.screenshot(new Page.ScreenshotOptions()
             .setPath(Paths.get("screenshots/" + name + ".png")));
     }
+
+    protected void waitForVisible(Locator locator, int timeout)
+    {
+        try
+        {
+            locator.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE).setTimeout(timeout));
+        }
+        catch (PlaywrightException e)
+        {
+            takeScreenshot("wait_failure_" + System.currentTimeMillis());
+            throw new RuntimeException("Element still not visible : " + locator, e);
+        }
+    }
+
+    public String getUrl() { return page.url(); }
+
+    public abstract void navigateTo(String url);
 }

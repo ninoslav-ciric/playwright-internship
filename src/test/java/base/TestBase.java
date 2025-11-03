@@ -39,7 +39,7 @@ public class TestBase {
             .setSnapshots(true)
             .setSources(true));
         loginPage = new LoginPage(page);
-        loginPage.navigateToLogin(getBaseUrl());
+        loginPage.navigateTo(getBaseUrl());
     }
 
     @AfterMethod

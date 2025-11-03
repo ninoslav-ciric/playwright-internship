@@ -6,8 +6,6 @@ import com.microsoft.playwright.TimeoutError;
 import com.microsoft.playwright.options.AriaRole;
 import org.testng.Assert;
 
-import static utils.ConfigReader.getValidEmail;
-import static utils.ConfigReader.getValidPassword;
 import static utils.Timeouts.DEFAULT_TIMEOUT;
 
 public class LoginPage extends BasePage {
@@ -28,15 +26,20 @@ public class LoginPage extends BasePage {
     private final Locator loginButton = page.getByRole(AriaRole.BUTTON,
             new Page.GetByRoleOptions().setName("Login"));
 
-    public LoginPage(Page page) {
+    public LoginPage(Page page)
+    {
         super(page);
     }
 
-    public void navigateToLogin(String url) {
-        try {
+    @Override
+    public void navigateTo(String url)
+    {
+        try
+        {
             safeNavigate(url);
             initialLoginButton.click();
-        } catch (TimeoutError e) {
+        } catch (TimeoutError e)
+        {
             throw new RuntimeException("Failed to navigate to login page: " + e.getMessage());
         }
     }
